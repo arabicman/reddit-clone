@@ -17,7 +17,7 @@ $ ng serve
 (3) 安装BOOTSTRAP
 
 ```bash
-$ npm install --save bootstrap
+$ npm install --save bootstrap@4.5.2
 ```
 
 然后,修改angular.json文件中的
