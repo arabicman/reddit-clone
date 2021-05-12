@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', async () => {
     await page.navigateTo();
-    expect(await page.getTitleText()).toEqual('reddit-clone app is running!');
+    expect(await page.getTitleText()).toEqual('reddit-clone-frontend app is running!');
   });
 
   afterEach(async () => {
