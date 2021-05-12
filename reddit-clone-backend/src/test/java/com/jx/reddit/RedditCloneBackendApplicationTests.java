@@ -1,10 +1,11 @@
 package com.jx.reddit;
 
-import org.junit.jupiter.api.Test;
+
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RedditCloneBackendApplicationTests {
+public class RedditCloneBackendApplicationTests {
 
 	@Test
 	void contextLoads() {
