@@ -1,12 +1,12 @@
 # Front-End Step by Step
 
-(1) 安装NPM
+## (1) 安装NPM
 
 ```bash
 $ npm install -g npm@6.14.12
 ```
 
-(2) ANGULAR-CLI创建项目
+## (2) ANGULAR-CLI创建项目
 
 ``` bash
 $ ng new reddit-clone-frontend
@@ -14,7 +14,7 @@ $ cd reddit-clone-frontend
 $ ng serve
 ```
 
-(3) 安装BOOTSTRAP
+## (3) 安装BOOTSTRAP
 
 ```bash
 $ npm install --save bootstrap@4.5.2
@@ -31,7 +31,7 @@ $ npm install --save bootstrap@4.5.2
 }
 ```
 
-(4) 创建Header组件
+## (4) 创建Header组件
 
 ```bash
 $ ng generate component header
@@ -46,7 +46,7 @@ $ ng generate component header
 
 
 
-(5) 创建AUTH/SIGNUP组件
+## (5) 创建auth/signup组件
 
 - 创建
 
@@ -190,7 +190,7 @@ $ ng generate component header
 
   
 
-(6)创建Auth/shared/auth服务
+## (6)创建auth/shared/auth服务
 
 - 创建
 
@@ -234,3 +234,25 @@ $ ng generate component header
   ```
 
   
+
+## (7)创建auth/login组件
+
+- 创建
+
+  ```bash
+  $ ng g c auth/login
+  ```
+
+- 导入HTML、CSS： https://programmingtechie.com/2020/04/03/build-a-full-stack-reddit-clone-with-spring-boot-and-angular-part-12/
+
+- 把组件添加到app-routing.module.ts
+
+  ```typescript
+  const routes: Routes = [
+    {path: 'sign-up', component: SignupComponent},
+    {path: 'login', component: LoginComponent}
+  ];
+  ```
+
+  
+
