@@ -245,6 +245,8 @@ $ ng generate component header
 
 - 导入HTML、CSS： https://programmingtechie.com/2020/04/03/build-a-full-stack-reddit-clone-with-spring-boot-and-angular-part-12/
 
+- 绑定FormGroup和FormControl从TS到HTML
+
 - 把组件添加到app-routing.module.ts
 
   ```typescript
@@ -254,5 +256,151 @@ $ ng generate component header
   ];
   ```
 
+- 创建DTO类login-request.payload.ts和login-response.payload.ts
+
+- 在package.json中添加依赖,并在app.module.ts中导入
+
+  ```bash
+  $ npm install ngx-webstorage --save
+  ```
+
+  ```json
+  {
+    "devDependencies":{
+      "ngx-webstorage": "5.0.0"
+    }
+  }
+  ```
+
+  ``` typescript
+  imports:[
+    NgxWebstorageModule.forRoot()
+  ]
+  ```
+
+- 在auth服务中实现login( )方法
+
+  ```typescript
+  //Step1
+  import { LocalStorageService } from 'ngx-webstorage';
+  import { map, tap } from 'rxjs/operators';
+  //Step2
+  constructor(private httpClient: HttpClient, private localStorage: LocalStorageService) {
+    }
+  //Step3
+  login(loginRequestPayload: LoginRequestPayload): Observable<boolean>{
+      return this.httpClient.post<LoginResponse>('http://localhost:8080/api/auth/login',
+        loginRequestPayload).pipe(map(data => {
+          this.localStorage.store('authenticationToken', data.authenticationToken);
+          this.localStorage.store('username', data.username);
+          this.localStorage.store('refreshToken', data.refreshToken);
+          this.localStorage.store('expiresAt', data.expiresAt);
   
+          return true;
+        })); 
+    }
+  ```
+
+- 在login组件中引用auth服务的login()方法
+
+  ```typescript
+  //Step1
+  loginForm:FormGroup;
+    loginRequestPayload: LoginRequestPayload;
+    isError:boolean;
+  
+    constructor(private authService: AuthService) { 
+      this.loginRequestPayload = {
+        username: '',
+        password: ''
+      };
+      this.isError = false;
+  
+    }
+  //Step2
+  login(){
+      this.loginRequestPayload.username = this.loginForm.get('username').value;
+      this.loginRequestPayload.password = this.loginForm.get('password').value;
+  
+      this.authService.login(this.loginRequestPayload).subscribe(data =>{
+        console.log('Login Successful');  
+      });
+    }
+  ```
+
+- 安装ngx-toastr并导入到app.module.ts
+
+  ```typescript
+  import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+  import { ToastrModule } from 'ngx-toastr';
+  
+  imports: [
+      //.....,
+      BrowserAnimationsModule,
+      ToastrModule.forRoot()
+    ]
+  ```
+
+- 将Toastr注入到signup、login组件
+
+（8）创建token-interceptor.ts
+
+```typescript
+export class TokenInterceptor implements HttpInterceptor {
+    isTokenRefreshing = false;
+    refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject(null);
+
+    constructor(public authService: AuthService) { }
+
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any>{
+        const jwtToken = this.authService.getJwtToken();
+        if(jwtToken) {
+            this.addToken(req, jwtToken);
+        }
+        return next.handle(req).pipe(catchError(error => {
+            if (error instanceof HttpErrorResponse
+                && error.status === 403) {
+                return this.handleAuthErrors(req, next);
+            } else {
+                return throwError(error);
+            }
+        }));
+
+    }
+
+    private handleAuthErrors(req: HttpRequest<any>, next: HttpHandler)
+        : Observable<HttpEvent<any>> {
+        if (!this.isTokenRefreshing) {
+            this.isTokenRefreshing = true;
+            this.refreshTokenSubject.next(null);
+
+            return this.authService.refreshToken().pipe(
+                switchMap((refreshTokenResponse: LoginResponse) => {
+                    this.isTokenRefreshing = false;
+                    this.refreshTokenSubject
+                        .next(refreshTokenResponse.authenticationToken);
+                    return next.handle(this.addToken(req,
+                        refreshTokenResponse.authenticationToken));
+                })
+            )
+        } else {
+            return this.refreshTokenSubject.pipe(
+                filter(result => result !== null),
+                take(1),
+                switchMap((res) => {
+                    return next.handle(this.addToken(req,
+                        this.authService.getJwtToken()))
+                })
+            );
+        }
+    }
+
+    addToken(req: HttpRequest<any>, jwtToken: any) {
+        return req.clone({
+            headers: req.headers.set('Authorization',
+                'Bearer ' + jwtToken)
+        });
+    }
+}
+```
 
