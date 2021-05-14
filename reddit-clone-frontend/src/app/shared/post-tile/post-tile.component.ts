@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { PostService } from '../post.service';
 import { PostModel } from '../post-model';
-import { faComments } from '@fortawesome/free-solid-svg-icons';
+import { faComments, faLink } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
 export class PostTileComponent implements OnInit {
 
   faComments = faComments;
+  faLink = faLink;
+  
   @Input() posts: PostModel[];
 
   constructor(private router: Router) { }

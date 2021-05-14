@@ -10,20 +10,26 @@
       </span>
       <hr />
       <div class="post-title">
-        <a class="postname" href="{{post.url}}">{{post.postName}}</a>
+        <a class="postname" routerLink="/posts/{{post.id}}">{{post.postName}}</a>
       </div>
       <div>
         <p class="post-text" [innerHtml]="post.description"></p>
       </div>
       <hr />
       <span>
-        <a class="btnCommments" role="button">
+        <!-- <button class="login" (click)="goToPost(post.id)">
+          Link
+        </button> -->
+        <a class="btnLink" role="button" href="{{post.url}}">
+          <fa-icon [icon]="faLink" ></fa-icon>
+          External Link
+        </a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="btnCommments" role="button" (click)="goToPost(post.id)">
           <fa-icon [icon]="faComments"></fa-icon>
           Comments({{post.commentCount}})
         </a>
-        <button class="login" (click)="goToPost(post.id)">
-          Read Post
-        </button>
+        
       </span>
     </div>
   </div>
