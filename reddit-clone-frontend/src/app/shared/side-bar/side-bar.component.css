@@ -16,7 +16,7 @@
 
 .btnCreatePost, .btnCreateSubreddit{
     background-color: #fc0a0a;
-    border-color: #0079D3;
+    border-color: #fc0404;
     color: aliceblue;
     fill: #0079D3;
     border: 1px solid;
@@ -35,9 +35,16 @@
     height: 34px;
 }
 
+.btnCreatePost:hover{
+    opacity: 0.6;
+}
+.btnCreateSubreddit:hover{
+    opacity: 0.6;
+}
+
 .btnCreateSubreddit{
     margin-top: 5px;
-    color: #0079D3;
+    color: #ff0707;
     background-color: transparent;
 }
 
