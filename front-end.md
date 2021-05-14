@@ -343,6 +343,18 @@ $ ng generate component header
 
 - 将Toastr注入到signup、login组件
 
+- 在angular.json中style中加入toast.css
+
+  ```json
+  "styles": [
+                "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "src/styles.css",
+                "node_modules/ngx-toastr/toastr.css"
+              ],
+  ```
+
+  
+
 （8）创建token-interceptor.ts
 
 ```typescript
@@ -402,5 +414,16 @@ export class TokenInterceptor implements HttpInterceptor {
         });
     }
 }
+```
+
+## (8)创建各个组件
+
+<img src="/Users/lijx/Desktop/ScreenShot/Screen Shot 2021-05-13 at 8.42.03 PM.png" alt="Screen Shot 2021-05-13 at 8.42.03 PM" style="zoom:50%;" />
+
+```bash
+$ ng g c shared/post-tile
+$ ng g c shared/vote-button
+$ ng g c shared/side-bar
+$ ng g c shared/subreddit-side-bar
 ```
 

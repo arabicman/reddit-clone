@@ -11,27 +11,23 @@ import { map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
+
   @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
   @Output() username: EventEmitter<string> = new EventEmitter();
-  
+
   refreshTokenPayload = {
     refreshToken: this.getRefreshToken(),
     username: this.getUserName()
   }
-  
 
-  constructor(private httpClient: HttpClient, private localStorage: LocalStorageService) {
+  constructor(private httpClient: HttpClient,
+    private localStorage: LocalStorageService) {
   }
-  //SignUp() 
+
   signup(signupRequestPayload: SignupRequestPayload): Observable<any> {
-    return this.httpClient.post(
-      'http://localhost:8080/api/auth/signup', 
-      signupRequestPayload, 
-      { responseType: 'text' }
-    );
+    return this.httpClient.post('http://localhost:8080/api/auth/signup', signupRequestPayload, { responseType: 'text' });
   }
 
-  //LogIn()
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
     return this.httpClient.post<LoginResponse>('http://localhost:8080/api/auth/login',
       loginRequestPayload).pipe(map(data => {
@@ -54,8 +50,8 @@ export class AuthService {
     return this.httpClient.post<LoginResponse>('http://localhost:8080/api/auth/refresh/token',
       this.refreshTokenPayload)
       .pipe(tap(response => {
-        this.localStorage.clear('authenticationToken');
-        this.localStorage.clear('expiresAt');
+        // this.localStorage.clear('authenticationToken');
+        // this.localStorage.clear('expiresAt');
 
         this.localStorage.store('authenticationToken',
           response.authenticationToken);
@@ -87,6 +83,4 @@ export class AuthService {
   isLoggedIn(): boolean {
     return this.getJwtToken() != null;
   }
-
-
 }
