@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row justify-content-center ">
+      <div class="create-subreddit-container">
+        <form class="post-form m-2" [formGroup]="createSubredditForm" (ngSubmit)="createSubreddit()">
+          <div class="form-group">
+            <div class="create-subreddit-heading">Create Subreddit</div>
+            <hr />
+            <input type="text" [formControlName]="'title'" class="form-control" style="margin-top: 5px"
+              placeholder="Title">
+            <textarea type="text" [formControlName]="'description'" style="width: 100%; margin-top: 5px"
+              placeholder="Description"></textarea>
+            <div>
+              <div style="margin-top: 5px;" >
+                <button (click)="discard()" class="btnDiscard col-5 offset-1">Discard</button>
+                <button type="submit" class="btnCreateSubreddit col-5">Create</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-3 d-none 	d-sm-none d-md-none d-lg-block">
+        <div class="sidebar m-2 ">
+          <h5 class="guidelines mt-2 ">Posting to Spring Reddit</h5>
+          <hr />
+          <ul>
+            <li>Remember the human</li>
+            <br>
+            <li>Behave like you would in real life</li>
+            <br>
+            <li>Don't spam</li>
+            <br>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
